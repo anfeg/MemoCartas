@@ -5,61 +5,72 @@ public class Game {
     private final Board board;
     private final Player player;
     private final GameUI ui;
+    private final int cardsVisivilityTime;
     private final int timer;
-    private String[] selectedTheme;
     private boolean isGameOver;
 
     public Game(int lives, int timer) {
         this.ui = new GameUI();
-
+        ui.displayWelcomeMessage();
         Scanner scanner = new Scanner(System.in);
 
-        // Solicitar al jugador que seleccione el nivel de dificultad de la partida
+        // Selección de dificultad
         ui.displaySelectDifficultyMessage();
+        int sizeSelected = scanner.nextInt();
+        int size = mapSizeSelection(sizeSelected);
 
-        int sizeChoice = scanner.nextInt();
-        int size = 0;
-
-        switch (sizeChoice) {
-            case 1 -> size = 2;
-            case 2 -> size = 4;
-            case 3 -> size = 6;
-            case 4 -> size = 8;
-            default -> {
-                System.out.println("Opción no válida. Se usará el tamaño 4x4 por defecto.");
-                size = 4;
-            }
-        }
-
+        // Selección de tema
         ui.displaySelectThemeMessage();
         int themeSelected = scanner.nextInt();
-        String[] theme = {""};
-
-        switch (themeSelected) {
-            case 1 -> theme = Themes.ANIMALES;
-            case 2 -> theme = Themes.PAISAJES;
-            case 3 -> theme = Themes.EMOJIS;
-            default -> {
-                System.out.println("Tema no válido. Se seleccionará el tema de animales por defecto.");
-                this.selectedTheme = Themes.ANIMALES;
-            }
-        }
+        String[] theme = mapThemeSelection(themeSelected);
 
         this.board = new Board(size, theme);
         this.player = new Player(lives);
+        this.cardsVisivilityTime = calculateVisivilityTime(sizeSelected);
         this.timer = timer;
         this.isGameOver = false;
     }
 
+    private int calculateVisivilityTime(int sizeSelected) {
+        return switch (sizeSelected) {
+            case 1 -> 5000; // 5 segundos para nivel test
+            case 2 -> 10000; // 10 segundos para nivel fácil
+            case 3 -> 20000; // 20 segundos para nivel Intermedio
+            case 4 -> 30000; // 30 segundos para nivel Avanzado
+            default -> 8000; // Tiempo por defecto
+        };
+    }
 
+    private int mapSizeSelection(int sizeSelected) {
+        return switch (sizeSelected) {
+            case 1 -> 2;
+            case 2 -> 4;
+            case 3 -> 6;
+            case 4 -> 8;
+            default -> {
+                System.out.println("Opción no válida. Se usará el tamaño 4x4 por defecto.");
+                yield 4;
+            }
+        };
+    }
 
+    private String[] mapThemeSelection(int themeSelected) {
+        return switch (themeSelected) {
+            case 1 -> Themes.ANIMALES;
+            case 2 -> Themes.PAISAJES;
+            case 3 -> Themes.EMOJIS;
+            default -> {
+                System.out.println("Tema no válido. Se seleccionará el tema de animales por defecto.");
+                yield Themes.ANIMALES;
+            }
+        };
+    }
 
     public void startGame() {
-        ui.displayWelcomeMessage();
         Scanner scanner = new Scanner(System.in);
         board.displayBoard(true);
         try {
-            Thread.sleep(3000); // Mostrar el tablero por 3 segundos
+            Thread.sleep( cardsVisivilityTime); // Mostrar el tablero por X segundos
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

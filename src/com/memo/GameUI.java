@@ -1,27 +1,26 @@
 package com.memo;
 
 public class GameUI {
+    public void displayWelcomeMessage(){
+        System.out.println("¡BIENVENIDO A MEMOCARTAS!");
+    }
     public void displayWinMessage(int score){
         System.out.println("================================");
         System.out.println("¡Felicidades! ¡Ganaste el juego!".toUpperCase());
         System.out.println("Puntuación final: " + score);
         System.out.println("================================");
     }
-    public void displayWelcomeMessage(){
-        System.out.println("¡BIENVENIDO A MEMOCARTAS!");
-        System.out.println("__________________________________");
 
-    }
     public void displaySelectDifficultyMessage(){
         // Seleccionar el tamaño del tablero
         System.out.println();
         System.out.println("__________________________________");
         System.out.println("Selecciona la dificultad:");
         System.out.println();
-        System.out.println("1. 2x2 (Test)");
-        System.out.println("2. 4x4 (Fácil)");
-        System.out.println("3. 6x6 (Intermedio)");
-        System.out.println("4. 8x8 (Avanzado)");
+        System.out.println("1. 2x2 (Test)       - 2 vidas - 5s de visibilidad inicial");
+        System.out.println("2. 4x4 (Fácil)      - 3 vidas - 10s de visibilidad inicial");
+        System.out.println("3. 6x6 (Intermedio) - 4 vidas - 20s de visibilidad inicial");
+        System.out.println("4. 8x8 (Avanzado)   - 5 vidas - 30s de visibilidad inicial");
         System.out.println("__________________________________");
         System.out.print("Ingresa tu opción: ");
     }
